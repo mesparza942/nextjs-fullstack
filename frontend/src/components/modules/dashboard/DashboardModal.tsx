@@ -1,11 +1,11 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Modal, Input, Button, Loading } from "../../common";
 import { useBackendFetch } from "@/hooks/useBackendFetch";
-import type { User, CreateUserBody } from "@/types/api-schemas";
 import { useUser } from "@/hooks/userUser";
 import { useSession } from "next-auth/react";
 import { redirect } from "next/navigation";
+import type { User, CreateUserBody } from "@/types/api-schemas";
 
 const DashboardModal = () => {
   const [isModalOpen, setIsModalOpen] = useState(true);
@@ -20,12 +20,10 @@ const DashboardModal = () => {
     api: `/user/${session?.cognitoId}`,
     method: "GET",
   });
-  const {
-    fetchData: createUser,
-    loading,
-    data,
-    error,
-  } = useBackendFetch<User, CreateUserBody>({ api: "/user", method: "POST" });
+  const { fetchData: createUser, loading } = useBackendFetch<
+    User,
+    CreateUserBody
+  >({ api: "/user", method: "POST" });
 
   useEffect(() => {
     if (session?.cognitoId) {
@@ -41,16 +39,18 @@ const DashboardModal = () => {
 
   const handleSubmit = async () => {
     await createUser({ name });
-    if (data && !error) {
-      setUserName(data.name);
-      setIsModalOpen(false);
-    }
+    setUserName(name);
+    setIsModalOpen(false);
   };
 
-  const shouldCreateUser = !loadingUser && !userData;
+  const shouldCreateUser = useMemo(
+    () => !loadingUser && !userData,
+    [loadingUser, userData]
+  );
+
   return (
     <>
-      {loading || (loadingUser && <Loading className="fixed top-0 left-0" />)}
+      {(loading || loadingUser) && <Loading className="fixed top-0 left-0" />}
       {shouldCreateUser && (
         <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
           <h1 className="text-3xl">How do you like to be called?</h1>
