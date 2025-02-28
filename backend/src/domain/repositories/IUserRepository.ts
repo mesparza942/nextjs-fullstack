@@ -2,5 +2,5 @@ import { User } from "../entities/User";
 
 export interface IUserRepository {
   create(user: User): Promise<User>;
-  findById(id: number): Promise<User | null>;
+  findById(cognitoId: string): Promise<User | null>;
 }

@@ -30,7 +30,7 @@ const config: Config = {
       colors: {
         background: "var(--background)",
         foreground: "var(--foreground)",
-        greenFav: "rgb(173, 91, 255)",
+        "nice-purple": "rgb(173, 91, 255)",
       },
       backgroundImage: {
         "logo-bg":

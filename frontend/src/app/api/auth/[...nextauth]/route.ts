@@ -1,5 +1,6 @@
 import NextAuth from "next-auth";
-import type { NextAuthOptions } from "next-auth";
+import type { NextAuthOptions, Session } from "next-auth";
+import type { JWT } from "next-auth/jwt";
 import CognitoProvider from "next-auth/providers/cognito";
 
 export const authOptions: NextAuthOptions = {
@@ -18,6 +19,24 @@ export const authOptions: NextAuthOptions = {
   ],
   session: {
     strategy: "jwt",
+  },
+  callbacks: {
+    async jwt({ token, account, profile }) {
+      if (account && account.access_token) {
+        token.accessToken = account.access_token;
+      }
+      if (profile) {
+        token.cognitoId = profile.sub;
+      }
+      return token;
+    },
+    async session({ session, token }: { session: Session; token: JWT }) {
+      return {
+        ...session,
+        accessToken: token.accessToken,
+        cognitoId: token.cognitoId,
+      };
+    },
   },
 };
 

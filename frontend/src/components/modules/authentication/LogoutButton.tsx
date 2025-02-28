@@ -1,4 +1,4 @@
-import Button from "@/components/shared/Button";
+import Button from "@/components/common/Button";
 import { signOut } from "next-auth/react";
 
 const LogoutButton = () => {

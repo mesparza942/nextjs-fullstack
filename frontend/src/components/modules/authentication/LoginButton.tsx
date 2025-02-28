@@ -1,30 +1,11 @@
 "use client";
-import React, { useEffect, useState } from "react";
-import { signIn, useSession } from "next-auth/react";
-import { redirect } from "next/navigation";
-import { usePathname } from "next/navigation";
-import Button from "@/components/shared/Button";
-import Loading from "@/components/shared/LoadingBar";
+import React, { useState } from "react";
+import { signIn } from "next-auth/react";
+import Button from "@/components/common/Button";
+import Loading from "@/components/common/LoadingBar";
 
 const LoginButton = () => {
   const [loading, setLoading] = useState(false);
-  const { data: session, status } = useSession();
-  const pathname = usePathname();
-
-  useEffect(() => {
-    console.log("Status:", status);
-    console.log("Session:", session);
-    if (
-      (status === "authenticated" || session) &&
-      !pathname.includes("/login")
-    ) {
-      redirect("/dashboard");
-    }
-  }, [status, pathname, session]);
-
-  if (status === "loading") {
-    return <div>Cargando...</div>;
-  }
 
   const handleLoginClick = async () => {
     setLoading(true);

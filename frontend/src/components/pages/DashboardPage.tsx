@@ -1,10 +1,17 @@
-import LogoutButton from "@/components/modules/authentication/LogoutButton";
+import DashboardModal from "../modules/dashboard/DashboardModal";
+import Sidebar from "../modules/dashboard/Sidebar";
+import Content from "../modules/dashboard/Content";
+import { useUser } from "@/hooks/userUser";
 
 const DashboardPage = () => {
+  const { userName } = useUser();
   return (
     <div>
-      <h1 className="text-5xl my-4">Dashboard</h1>
-      <LogoutButton />
+      <DashboardModal />
+      <div className="flex">
+        <Sidebar />
+        <Content userName={userName!} />
+      </div>
     </div>
   );
 };

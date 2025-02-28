@@ -4,6 +4,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "prisma generate && nodemon src/infraestructure/express/server.ts",
+    "db-init": "npx prisma migrate dev --name init",
     "build": "prisma generate && tsc --resolveJsonModule --esModuleInterop",
     "start": "node dist/server.js"
   },
