@@ -4,7 +4,7 @@ import { Note } from "../../domain/entities/Note";
 export class GetNotesService {
   constructor(private noteRepository: INoteRepository) {}
 
-  async execute(): Promise<Note[]> {
-    return this.noteRepository.findMany();
+  async execute(userId: string): Promise<Note[]> {
+    return this.noteRepository.findMany(userId);
   }
 }

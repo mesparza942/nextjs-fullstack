@@ -8,6 +8,9 @@
     "build": "prisma generate && tsc --resolveJsonModule --esModuleInterop",
     "start": "node dist/server.js"
   },
+  "prisma": {
+    "seed": "ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/seed.ts"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",

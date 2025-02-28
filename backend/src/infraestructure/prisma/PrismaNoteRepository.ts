@@ -23,7 +23,7 @@ export class PrismaNoteRepository implements INoteRepository {
 
   async update(note: Note): Promise<Note> {
     const updated = await prisma.note.update({
-      where: { id: note.id },
+      where: { id: note.id, userId: note.userId },
       data: {
         title: note.title,
         content: note.content,
@@ -39,12 +39,18 @@ export class PrismaNoteRepository implements INoteRepository {
     );
   }
 
-  async delete(noteId: number, userId: number): Promise<void> {
-    await prisma.note.delete({ where: { id: noteId, userId } });
+  async delete(note: Note): Promise<boolean> {
+    const resp = await prisma.note.delete({
+      where: { id: note.id, userId: note.userId },
+    });
+    if (resp) return true;
+    return false;
   }
 
-  async findById(id: number): Promise<Note | null> {
-    const found = await prisma.note.findUnique({ where: { id } });
+  async findById(id: number, userId: string): Promise<Note | null> {
+    const found = await prisma.note.findFirst({
+      where: { id, user: { cognitoId: userId } },
+    });
     if (!found) return null;
     return new Note(
       found.title,
@@ -56,8 +62,11 @@ export class PrismaNoteRepository implements INoteRepository {
     );
   }
 
-  async findMany(): Promise<Note[]> {
-    const notes = await prisma.note.findMany();
+  async findMany(userId: string): Promise<Note[]> {
+    const notes = await prisma.note.findMany({
+      where: { user: { cognitoId: userId } },
+      orderBy: { createdAt: "asc" },
+    });
     return notes.map(
       (note) =>
         new Note(
