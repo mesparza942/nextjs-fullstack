@@ -82,3 +82,9 @@ After that you should be taken to the `/dashboard` page where you can interact w
 <img src="https://github.com/mesparza942/nextjs-fullstack/blob/main/assets/cognito-login.png"/>
 
 <img src="https://github.com/mesparza942/nextjs-fullstack/blob/main/assets/app-dashboard-page.png"/>
+
+### Bonus
+
+I was not able to complete all of the bonus bullet points, please find a Quick video I made to share how I would solve these points if I had more time.
+
+[https://drive.google.com/file/d/1jJ4aydS8B1BAkdyBN8b1xXDNDLqtsDSJ/view?usp=sharing]
