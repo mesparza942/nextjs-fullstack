@@ -23,7 +23,7 @@ export class PrismaUserRepository implements IUserRepository {
     );
   }
 
-  async findById(id: string): Promise<User | null> {
+  async findByCognitoId(id: string): Promise<User | null> {
     const found = await prisma.user.findUnique({ where: { cognitoId: id } });
     if (!found) return null;
     return new User(

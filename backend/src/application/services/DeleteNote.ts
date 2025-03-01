@@ -7,14 +7,9 @@ export class DeleteNoteService {
     private userRepository: IUserRepository
   ) {}
 
-  async execute(data: { noteId: number; userId: string }): Promise<void> {
-    const user = await this.userRepository.findById(data.userId);
-    if (!user) throw new Error("User not found.");
-    const note = await this.noteRepository.findById(
-      data.noteId,
-      user.cognitoId
-    );
-    if (!note) throw new Error("Note associated to User not found.");
-    this.noteRepository.delete(note);
+  async execute(data: { noteId: number; cognitoId: string }): Promise<void> {
+    const user = await this.userRepository.findByCognitoId(data.cognitoId);
+    if (!user) throw new Error("User associated to this Note not found.");
+    this.noteRepository.delete(data.noteId, user.id!);
   }
 }

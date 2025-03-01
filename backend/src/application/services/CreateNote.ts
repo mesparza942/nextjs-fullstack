@@ -11,16 +11,16 @@ export class CreateNoteService {
   async execute(data: {
     title: string;
     content: string;
-    userId: string;
+    cognitoId: string;
   }): Promise<Note> {
-    const user = await this.userRepository.findById(data.userId);
+    const user = await this.userRepository.findByCognitoId(data.cognitoId);
     if (!user) throw new Error("User not found.");
     const newNote = new Note(
       data.title,
       data.content,
-      user.id!,
       new Date(),
-      new Date()
+      new Date(),
+      user.id!
     );
     return this.noteRepository.create(newNote);
   }

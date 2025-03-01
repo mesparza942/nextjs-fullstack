@@ -8,56 +8,61 @@ export class PrismaNoteRepository implements INoteRepository {
       data: {
         title: note.title,
         content: note.content,
-        userId: note.userId,
+        userId: note.userId!,
       },
     });
     return new Note(
       created.title,
       created.content,
-      created.userId,
       created.createdAt,
       created.updatedAt,
+      created.userId,
       created.id
     );
   }
 
-  async update(note: Note): Promise<Note> {
+  async update(
+    noteId: number,
+    title: string,
+    content: string,
+    userId: number
+  ): Promise<Note> {
     const updated = await prisma.note.update({
-      where: { id: note.id, userId: note.userId },
+      where: { id: Number(noteId), userId },
       data: {
-        title: note.title,
-        content: note.content,
+        title,
+        content,
       },
     });
     return new Note(
       updated.title,
       updated.content,
-      updated.userId,
       updated.createdAt,
       updated.updatedAt,
+      updated.userId,
       updated.id
     );
   }
 
-  async delete(note: Note): Promise<boolean> {
+  async delete(noteId: number, userId: number): Promise<boolean> {
     const resp = await prisma.note.delete({
-      where: { id: note.id, userId: note.userId },
+      where: { id: noteId, userId },
     });
     if (resp) return true;
     return false;
   }
 
-  async findById(id: number, userId: string): Promise<Note | null> {
+  async findById(id: number): Promise<Note | null> {
     const found = await prisma.note.findFirst({
-      where: { id, user: { cognitoId: userId } },
+      where: { id },
     });
     if (!found) return null;
     return new Note(
       found.title,
       found.content,
-      found.userId,
       found.createdAt,
       found.updatedAt,
+      found.userId,
       found.id
     );
   }
@@ -72,9 +77,9 @@ export class PrismaNoteRepository implements INoteRepository {
         new Note(
           note.title,
           note.content,
-          note.userId,
           note.createdAt,
           note.updatedAt,
+          note.userId,
           note.id
         )
     );

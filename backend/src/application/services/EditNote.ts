@@ -9,26 +9,18 @@ export class EditNoteService {
   ) {}
 
   async execute(data: {
+    cognitoId: string;
     noteId: number;
     title: string;
     content: string;
-    userId: string;
   }): Promise<Note> {
-    const user = await this.userRepository.findById(data.userId);
-    if (!user) throw new Error("User not found");
-    const noteToUpdate = await this.noteRepository.findById(
+    const user = await this.userRepository.findByCognitoId(data.cognitoId);
+    if (!user) throw new Error("User associated to this Note not found.");
+    return this.noteRepository.update(
       data.noteId,
-      user.cognitoId
-    );
-    if (!noteToUpdate) throw new Error("Note not found");
-    const updatedNote = new Note(
       data.title,
       data.content,
-      user.id!,
-      noteToUpdate?.createdAt,
-      new Date(),
-      noteToUpdate.id
+      user.id!
     );
-    return this.noteRepository.update(updatedNote);
   }
 }

@@ -19,7 +19,7 @@ router.post("/", async (req, res) => {
     );
     const note = await createNoteService.execute({
       ...req.body,
-      userId: req.user?.username!,
+      cognitoId: req.user?.username!,
     });
     res.status(201).json(note);
   } catch (error: any) {
@@ -30,11 +30,10 @@ router.post("/", async (req, res) => {
 router.put("/:id", async (req, res) => {
   try {
     const editNoteService = new EditNoteService(noteRepository, userRepository);
-    // Combine the note ID from params with body data
     const note = await editNoteService.execute({
-      id: req.params.id,
+      noteId: req.params.id,
       ...req.body,
-      userId: req.user?.username!,
+      cognitoId: req.user?.username,
     });
     res.status(200).json(note);
   } catch (error: any) {
@@ -50,7 +49,7 @@ router.delete("/:id", async (req, res) => {
     );
     await deleteNoteService.execute({
       noteId: Number(req.params.id),
-      userId: req.user?.username!,
+      cognitoId: req.user?.username!,
     });
     res.status(204).send();
   } catch (error: any) {
