@@ -11,10 +11,9 @@ export function Providers({
   children: React.ReactNode;
   session: Session | null;
 }) {
-  if (session?.expires)
-    return (
-      <SessionProvider session={session}>
-        <UserProvider>{children}</UserProvider>
-      </SessionProvider>
-    );
+  return (
+    <SessionProvider session={session}>
+      <UserProvider>{children}</UserProvider>
+    </SessionProvider>
+  );
 }
