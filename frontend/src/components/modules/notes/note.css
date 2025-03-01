@@ -1,0 +1,14 @@
+.edit-note {
+  display: none;
+}
+
+.note-card:hover {
+  cursor: pointer;
+}
+
+.note-card:hover > div > .edit-note {
+  display: flex;
+  position: absolute;
+  left: 10px;
+  top: 10px;
+}

@@ -1,7 +1,7 @@
 import DashboardModal from "../modules/dashboard/DashboardModal";
 import Sidebar from "../modules/dashboard/Sidebar";
 import Content from "../modules/dashboard/Content";
-import { useUser } from "@/hooks/userUser";
+import { useUser } from "@/hooks/useUser";
 
 const DashboardPage = () => {
   const { userName } = useUser();

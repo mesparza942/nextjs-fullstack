@@ -12,11 +12,13 @@ export function useBackendFetch<DataType, BodyType>({
 }: UseBackendFetch) {
   const [data, setData] = useState<DataType | null>(null);
   const [loading, setLoading] = useState(false);
+  const [dataFetched, setDataFetched] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const { data: session } = useSession();
 
   const fetchData = useCallback(
     async (body?: BodyType) => {
+      setDataFetched(false);
       setError(null);
       setLoading(true);
       try {
@@ -41,10 +43,11 @@ export function useBackendFetch<DataType, BodyType>({
         }
       } finally {
         setLoading(false);
+        setDataFetched(true);
       }
     },
     [api, method, session]
   );
 
-  return { data, loading, error, fetchData };
+  return { data, loading, error, fetchData, dataFetched };
 }

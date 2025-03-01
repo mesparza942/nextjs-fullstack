@@ -17,7 +17,11 @@ const LogoutButton = () => {
     window.location.href = cognitoLogoutUrl;
   };
 
-  return <Button onClick={handleSignOut}>Sign Out</Button>;
+  return (
+    <Button onClick={handleSignOut} className="bg-yellow-300 !text-black">
+      Sign Out
+    </Button>
+  );
 };
 
 export default LogoutButton;
